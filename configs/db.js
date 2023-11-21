@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Connects the database with a URL using mongoose
 const init = () => {
     mongoose.set('debug', true);
 

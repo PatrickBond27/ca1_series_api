@@ -10,6 +10,7 @@ const { readData,
         deleteData 
 } = require('../controllers/director.controller');
 
+// Router for the API requests
 router
     .get('/', readData)
     .get('/:id', readOne)

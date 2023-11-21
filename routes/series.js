@@ -12,6 +12,7 @@ const { readData,
         deleteData 
 } = require('../controllers/serie.controller');
 
+// Router for the API requests
 router
     .get('/', readData)
     .get('/:id', readOne)

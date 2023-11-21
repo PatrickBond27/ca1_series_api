@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+// The model takes in the types of data that are specified, some are required and some are optional
 const serieSchema = new Schema({
     title: {
         type: String,
@@ -16,6 +17,20 @@ const serieSchema = new Schema({
             required: [true, 'Directors field is required'],
         }
     ],
+    release_year: {
+        type: String,
+        required: [true, 'Release field is required'],
+    },
+    country: {
+        type: String,
+    },
+    rating: {
+        type: String,
+        required: [true, 'Rating field is required'],
+    },
+    image_path: {
+        type: String
+    },
     // cast: [
     //     {
     //         type: Schema.Types.ObjectId,
@@ -35,20 +50,7 @@ const serieSchema = new Schema({
     //     type: String,
     //     required: [true, 'Date added field is required'],
     // },
-    release_year: {
-        type: String,
-        required: [true, 'Release field is required'],
-    },
-    country: {
-        type: String,
-    },
-    rating: {
-        type: String,
-        required: [true, 'Rating field is required'],
-    },
-    image_path: {
-        type: String
-    },
 }, { timestamps: true});
 
+// exporting the model
 module.exports = model('Serie', serieSchema);

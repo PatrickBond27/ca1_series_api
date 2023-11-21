@@ -23,6 +23,7 @@ const readOne = (req, res) => {
 
     let id = req.params.id;
 
+    // searches for a Director by an ${id}
     Director.findById(id)
     .then(data => {
 
@@ -51,9 +52,9 @@ const readOne = (req, res) => {
 const createData = (req, res) => {
 
     console.log(req.body);
-    let inputData = req.body;
+    let inputData = req.body; // creating an inputData variable when creating new Series data
 
-    Director.create(inputData)
+    Director.create(inputData) // creating new Directors data
     .then(data => {
         console.log(`New Director Created`, data);
         res.status(201).json(data);
@@ -89,10 +90,11 @@ const createData = (req, res) => {
     // });
 };
 
+// updating the Series data
 const updateData = (req, res) => {
 
-    let id = req.params.id;
-    let data = req.body;
+    let id = req.params.id; // requests the selected ${id} to use when updating
+    let data = req.body; // requests the whole data
 
     Director.findByIdAndUpdate(id, data, {
         new: true,
@@ -121,6 +123,7 @@ const updateData = (req, res) => {
     // });
 };
 
+  // Deletes the selected data
 const deleteData = (req, res) => {
 
     let id = req.params.id;
@@ -151,6 +154,7 @@ const deleteData = (req, res) => {
     // });
 };
 
+// exports the listed functions for an API
 module.exports = {
     readData,
     readOne,

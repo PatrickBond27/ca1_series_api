@@ -6,6 +6,7 @@ const { profile,
         login,
 } = require('../controllers/user.controller');
 
+// Router for the API requests
 router
     .post('/', profile)
     .post('/register', register)

@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
+// requests the specified image files to upload
 const fileFilter = (req, file, cb) => {
     if (!file) {
         req.imageError = "Image not uploaded";
@@ -15,6 +16,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+// Stores the image files
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, 'public/uploads');

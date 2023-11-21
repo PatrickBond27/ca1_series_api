@@ -1,12 +1,15 @@
 const Serie = require('../models/serie.model');
 const fs = require('fs');
 
+// requests the Series data from the database
 const readData = (req, res) => {
 
+    // looks for any available data
     Serie.find()
     .then((data) => {
         console.log(data);
 
+        // outputs the status message if no data was found
         if(data.length > 0) {
             res.status(200).json(data);
         }
@@ -14,6 +17,7 @@ const readData = (req, res) => {
             res.status(404).json('None found');
         }
     })
+    // catches any error
     .catch(err => {
         console.log(err);
         // res.status(500).json(err);
@@ -24,12 +28,15 @@ const readData = (req, res) => {
     // });
 };
 
+// requests a single serie data from the database with the selected ${id}
 const readOne = (req, res) => {
     let id = req.params.id;
 
+    // searches for a Serie by an ${id}
     Serie.findById(id)
     .then((data) => {
 
+        // outputs the status message if no data was found
         if(!data) {
             res.status(404).json({ msg: `Serie ${id} not found!`});
         }
@@ -37,6 +44,7 @@ const readOne = (req, res) => {
         res.status(200).json(data);
 
     })
+    // catches any error
     .catch((err) => {
         console.error(err);
         if(err.name === 'CastError') {
@@ -57,7 +65,7 @@ const createData = (req, res) => {
 
     // console.log(req.file);
     console.log(req.body);
-    let inputData = req.body;
+    let inputData = req.body; // creating an inputData variable when creating new Series data
     // if (req.file) {
     //     inputData.image_path = req.file.filename; // Setting image path if file is uploaded
     //   } else {
@@ -66,11 +74,12 @@ const createData = (req, res) => {
     //     }); // Sending error if image is required but not uploaded
     //   }
 
-    Serie.create(inputData)
+    Serie.create(inputData) // creating new Series data
     .then(data => {
-        console.log(`New Serie Created`, data);
+        console.log(`New Serie Created`, data); // displaying message when data is created
         res.status(201).json(data);
     })
+    // catch any errors including validation
     .catch(err => {
         if (err.name === "ValidationError") {
             // console.error('Validation Error!!', err);
@@ -103,24 +112,25 @@ const createData = (req, res) => {
     // });
 };
 
+// updating the Series data
 const updateData = (req, res) => {
 
-    let id = req.params.id;
-    let data = req.body;
+    let id = req.params.id; // requests the selected ${id} to use when updating
+    let data = req.body; // requests the whole data
 
     if (req.file) {
-        body.image_path = req.file.filename; // Updating image path if file is uploaded
+        body.image_path = req.file.filename; // Updates image path if the file is uploaded
     }
 
     Serie.findByIdAndUpdate(id, data, {
         new: false,
     })
     .then(data => {
-        deleteImage(data.image_path); // Deleting old image file
+        deleteImage(data.image_path); // Deletes the old image file
         if (data) {
-            res.status(201).json(data); // Sending updated data if found
+            res.status(201).json(data); // Sends updated data if founded
         } else {
-        deleteImage(body.data.image_path); // Deleting new image file if no data found
+        deleteImage(body.data.image_path); // Deletes new image file if no data was found
         res.status(404).json({
           message: `Serie with id: ${id} not found`,
         }); // Sending message if no data found for update
@@ -150,21 +160,23 @@ const updateData = (req, res) => {
     // });
 };
 
+// Deletes the selected image from the path
 const deleteImage = (filename) => {
     let path = `/public/uploads/${filename}`;
   
     fs.access(path, fs.constants.F_OK, (err) => {
       if (err) {
-        console.log(err); // Logging errors if file doesn't exist
+        console.log(err); // Logging errors if the file doesn't exist
         return;
       }
       fs.unlink(path, (err) => {
-        if (err) throw err; // Handling file deletion error
-        console.log(`${filename} was deleted`); // Logging file deletion success
+        if (err) throw err; // Handles the file deletion error
+        console.log(`${filename} was deleted`); // Logs the file deletion success
       });
     });
   };
 
+  // Deletes the selected data
 const deleteData = (req, res) => {
 
     let id = req.params.id;
@@ -176,8 +188,8 @@ const deleteData = (req, res) => {
     .then(data => {
         console.log('data', data);
         if(data) {
-            imagePath = data.image_path; // Storing image path before deletion
-            return data.deleteOne(); // Deleting data entry
+            imagePath = data.image_path; // Stores image path before deletion
+            return data.deleteOne(); // Deletes data entry
         } else {
             res.status(404).json({msg: `Serie ${id} not found`});
         }
@@ -203,6 +215,7 @@ const deleteData = (req, res) => {
     // });
 };
 
+// exports the listed functions for an API
 module.exports = {
     readData,
     readOne,
