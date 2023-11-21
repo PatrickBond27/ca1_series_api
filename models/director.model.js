@@ -9,10 +9,10 @@ const directorSchema = new Schema({
         type: String,
         required: [true, 'Email field is required'],
     },
-    password: {
-        type: String,
-        required: [true, 'Password field is required'],
-    },
+    // password: {
+    //     type: String,
+    //     required: [true, 'Password field is required'],
+    // },
     series: [
         {
             type: Schema.Types.ObjectId,

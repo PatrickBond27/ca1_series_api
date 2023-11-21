@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const imageUpload = require('../configs/imageUpload');
+
 const { loginRequired } = require('../controllers/user.controller');
 
 const { readData, 
@@ -12,13 +14,9 @@ const { readData,
 
 router
     .get('/', readData)
-    .get('/:id', loginRequired, readOne)
-    .post('/', loginRequired, createData)
-    .put('/:id', updateData)
-    .delete('/:id', deleteData);
-
-// router.get('/', (req, res) => {
-//     res.send('get all users');
-// });
+    .get('/:id', readOne)
+    .post('/', imageUpload.single('image'), loginRequired, createData)
+    .put('/:id', imageUpload.single('image'), loginRequired, updateData)
+    .delete('/:id', loginRequired, deleteData);
 
 module.exports = router;

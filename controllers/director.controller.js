@@ -17,10 +17,6 @@ const readData = (req, res) => {
         console.log(err);
         res.status(500).json(err);
     });
-
-    res.status(200).json({
-        "msg": "All directors retrieved"
-    });
 };
 
 const readOne = (req, res) => {

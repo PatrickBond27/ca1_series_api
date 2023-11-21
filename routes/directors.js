@@ -13,12 +13,8 @@ const { readData,
 router
     .get('/', readData)
     .get('/:id', readOne)
-    .post('/', createData)
-    .put('/:id', updateData)
-    .delete('/:id', deleteData)
-
-// router.get('/', (req, res) => {
-//     res.send('get all users');
-// });
+    .post('/', loginRequired, createData)
+    .put('/:id', loginRequired, updateData)
+    .delete('/:id', loginRequired, deleteData)
 
 module.exports = router;

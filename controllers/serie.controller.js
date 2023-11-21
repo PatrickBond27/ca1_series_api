@@ -55,8 +55,16 @@ const readOne = (req, res) => {
 
 const createData = (req, res) => {
 
+    // console.log(req.file);
     console.log(req.body);
     let inputData = req.body;
+    // if (req.file) {
+    //     inputData.image_path = req.file.filename; // Setting image path if file is uploaded
+    //   } else {
+    //     return res.status(422).json({
+    //       mgs: 'Image not uploaded',
+    //     }); // Sending error if image is required but not uploaded
+    //   }
 
     Serie.create(inputData)
     .then(data => {
@@ -65,6 +73,7 @@ const createData = (req, res) => {
     })
     .catch(err => {
         if (err.name === "ValidationError") {
+            // console.error('Validation Error!!', err);
             res.status(422).json(err);
         }
         else {
@@ -99,11 +108,23 @@ const updateData = (req, res) => {
     let id = req.params.id;
     let data = req.body;
 
+    if (req.file) {
+        body.image_path = req.file.filename; // Updating image path if file is uploaded
+    }
+
     Serie.findByIdAndUpdate(id, data, {
         new: false,
     })
-    .then(newData => {
-        res.status(201).json(newData);
+    .then(data => {
+        deleteImage(data.image_path); // Deleting old image file
+        if (data) {
+            res.status(201).json(data); // Sending updated data if found
+        } else {
+        deleteImage(body.data.image_path); // Deleting new image file if no data found
+        res.status(404).json({
+          message: `Serie with id: ${id} not found`,
+        }); // Sending message if no data found for update
+      }
     })
     .catch(err => {
         if(err.name === 'ValidationError'){
@@ -129,6 +150,21 @@ const updateData = (req, res) => {
     // });
 };
 
+const deleteImage = (filename) => {
+    let path = `/public/uploads/${filename}`;
+  
+    fs.access(path, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.log(err); // Logging errors if file doesn't exist
+        return;
+      }
+      fs.unlink(path, (err) => {
+        if (err) throw err; // Handling file deletion error
+        console.log(`${filename} was deleted`); // Logging file deletion success
+      });
+    });
+  };
+
 const deleteData = (req, res) => {
 
     let id = req.params.id;
@@ -147,7 +183,7 @@ const deleteData = (req, res) => {
         }
     })
     .then(() => {
-        deleteImg(imagePath); // Deleting associated image file
+        deleteImage(imagePath); // Deleting associated image file
         res.status(200).json({ msg: `Serie ${id} deleted!` });
     })
     .catch(err => {
@@ -156,7 +192,7 @@ const deleteData = (req, res) => {
         }
         else {
             console.error(err);
-            res.status(500).json(err);
+            // res.status(500).json(err);
         }
     });
 

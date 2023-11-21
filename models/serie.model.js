@@ -16,25 +16,25 @@ const serieSchema = new Schema({
             required: [true, 'Directors field is required'],
         }
     ],
-    cast: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Cast",
-        }
-    ],
-    genres: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Genre",
-        }
-    ],
-    duration: {
-        type: String,
-    },
-    date_added: {
-        type: String,
-        required: [true, 'Date added field is required'],
-    },
+    // cast: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "Cast",
+    //     }
+    // ],
+    // genres: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: "Genre",
+    //     }
+    // ],
+    // duration: {
+    //     type: String,
+    // },
+    // date_added: {
+    //     type: String,
+    //     required: [true, 'Date added field is required'],
+    // },
     release_year: {
         type: String,
         required: [true, 'Release field is required'],
